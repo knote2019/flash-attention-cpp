@@ -63,7 +63,6 @@ find_package(OpenMP REQUIRED)
 
 include_directories (
     include
-    src/common
     src/kernel
     src/ops
     ${SYS_CUDART_PATH}/include
@@ -76,7 +75,6 @@ link_directories (
 )
 
 file (GLOB FAI_SRCS 
-    src/kernel/flash_attn/*.cu
     src/kernel/flash_attn_v2/*.cu
     src/ops/*.cpp
     src/*.cpp
