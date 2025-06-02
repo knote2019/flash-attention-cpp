@@ -50,6 +50,8 @@ find_package(gflags REQUIRED)
 
 include_directories(
         include
+        gtest
+        gtest/include
         /usr/local/cuda/include
         ${GFLAGS_INCLUDE_DIR}
 )
@@ -60,6 +62,8 @@ link_directories(
 
 file(GLOB FAI_SRCS
         src/main.cpp
+        gtest/src/gtest-all.cc
+        src/test/*.cpp
         src/ops/*.cpp
         src/flash_attn_v2/*.cu
 )

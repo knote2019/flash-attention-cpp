@@ -6,6 +6,23 @@
 
 template<typename T>
 class Tensor {
+
+private:
+    const std::vector<size_t> m_shape;
+    const std::string m_name = "Tensor";
+    // the threshold of the random tensor will affect the difference of the fmha results
+    const float m_min = -1.0;
+    const float m_max = 1.0;
+
+    size_t m_elem_num = 0;
+    T *m_host_ptr = nullptr;
+    T *m_dev_ptr = nullptr;
+
+    double m_max_diff = 0.0;
+    double m_avg_diff = 0.0;
+
+    FAI_DISALLOW_COPY_AND_ASSIGN(Tensor);
+
 public:
     Tensor(const std::vector<size_t> &shape, const std::string &name = "Tensor", float min = -1.0, float max = 1.0)
             : m_shape(shape), m_name(name), m_min(min), m_max(max) {
@@ -104,20 +121,4 @@ public:
 
         FLOG("Max diff: %f, avg diff: %f", m_max_diff, m_avg_diff);
     }
-
-private:
-    const std::vector<size_t> m_shape;
-    const std::string m_name = "Tensor";
-    // the threshold of the random tensor will affect the difference of the fmha results
-    const float m_min = -1.0;
-    const float m_max = 1.0;
-
-    size_t m_elem_num = 0;
-    T *m_host_ptr = nullptr;
-    T *m_dev_ptr = nullptr;
-
-    double m_max_diff = 0.0;
-    double m_avg_diff = 0.0;
-
-    FAI_DISALLOW_COPY_AND_ASSIGN(Tensor);
 };
