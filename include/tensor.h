@@ -1,20 +1,14 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 21:08:30 on Sun, Aug 27, 2023
-//
-// Description: tensor
-
 #pragma once
 
 #include <random>
 
 #include "common.h"
 
-template <typename T>
+template<typename T>
 class Tensor {
 public:
     Tensor(const std::vector<size_t> &shape, const std::string &name = "Tensor", float min = -1.0, float max = 1.0)
-        : m_shape(shape), m_name(name), m_min(min), m_max(max) {
+            : m_shape(shape), m_name(name), m_min(min), m_max(max) {
         FAI_CHECK_GT(shape.size(), 0);
         for (size_t i = 0; i < shape.size(); ++i) {
             FAI_CHECK_GT(shape[i], 0);
@@ -25,7 +19,7 @@ public:
 
         m_host_ptr = new T[m_elem_num];
         FAI_CHECK(m_host_ptr);
-        FAI_CHECK_CUDART_ERROR(cudaMalloc((void **)&m_dev_ptr, m_elem_num * sizeof(T)));
+        FAI_CHECK_CUDART_ERROR(cudaMalloc((void **) &m_dev_ptr, m_elem_num * sizeof(T)));
         FAI_CHECK(m_dev_ptr);
 
         std::random_device rd;
@@ -47,7 +41,7 @@ public:
         }
 
         if (m_dev_ptr) {
-            FAI_CHECK_CUDART_ERROR(cudaFree((void *)m_dev_ptr));
+            FAI_CHECK_CUDART_ERROR(cudaFree((void *) m_dev_ptr));
             m_dev_ptr = nullptr;
         }
     }
@@ -73,7 +67,7 @@ public:
         FAI_CHECK_EQ(m_elem_num, base->getElemNum());
 
         FAI_CHECK_CUDART_ERROR(
-            cudaMemcpy(m_dev_ptr, base->getDevPtr(), m_elem_num * sizeof(T), cudaMemcpyDeviceToDevice));
+                cudaMemcpy(m_dev_ptr, base->getDevPtr(), m_elem_num * sizeof(T), cudaMemcpyDeviceToDevice));
     }
 
     void moveToHost() {
@@ -101,7 +95,7 @@ public:
         double diff = 0.0;
         for (size_t i = 0; i < m_elem_num; ++i) {
             diff = static_cast<double>(
-                std::abs(static_cast<float>(m_host_ptr[i]) - static_cast<float>(base->getHostPtr()[i])));
+                    std::abs(static_cast<float>(m_host_ptr[i]) - static_cast<float>(base->getHostPtr()[i])));
             m_max_diff = std::max(m_max_diff, diff);
             m_avg_diff += diff;
         }

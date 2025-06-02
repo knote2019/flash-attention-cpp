@@ -1,9 +1,3 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 21:08:30 on Sun, Aug 27, 2023
-//
-// Description: flash attn v2.1.0
-
 #include <cstddef>
 
 #include "cuda_runtime_api.h"

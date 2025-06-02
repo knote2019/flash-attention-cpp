@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include <cutlass/array.h>
-#include <cutlass/cutlass.h>
+#include "cutlass/array.h"
+#include "cutlass/cutlass.h"
 
 #include <cmath>
-#include <cute/tensor.hpp>
+#include "cute/tensor.hpp"
 
-#include "flash_attn_v2/utils.h"
+#include "utils.h"
 
 namespace flash {
 

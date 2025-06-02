@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <cutlass/numeric_types.h>
+#include "cutlass/numeric_types.h"
 
 #include "cute/algorithm/copy.hpp"
 #include "cutlass/cutlass.h"

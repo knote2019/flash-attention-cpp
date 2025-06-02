@@ -1,9 +1,3 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 20:42:28 on Sun, Feb 12, 2023
-//
-// Description: logging
-
 #pragma once
 
 #include <stdio.h>

@@ -5,9 +5,9 @@
 #pragma once
 
 #include "common.h"
-#include "flash_attn_v2/flash.h"
-#include "flash_attn_v2/flash_fwd_kernel.h"
-#include "flash_attn_v2/static_switch.h"
+#include "flash.h"
+#include "flash_fwd_kernel.h"
+#include "static_switch.h"
 
 template <typename Kernel_traits, bool Is_causal, bool Is_alibi, bool Is_even_MN, bool Is_even_K>
 __global__ void flash_fwd_kernel(Flash_fwd_params params) {

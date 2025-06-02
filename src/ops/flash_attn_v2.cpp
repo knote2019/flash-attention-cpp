@@ -1,14 +1,8 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 21:08:30 on Sun, Aug 27, 2023
-//
-// Description: flash attn v2.1.0
-
 #include "flash_attn_v2.h"
 
 #include "cutlass/half.h"
-#include "flash_attn_v2/flash.h"
-#include "flash_attn_v2/static_switch.h"
+#include "../flash_attn_v2/flash.h"
+#include "../flash_attn_v2/static_switch.h"
 #include "tensor.h"
 
 #define FAI_M_LOG2E 1.4426950408889634074  // log_2 e

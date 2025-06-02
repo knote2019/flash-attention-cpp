@@ -1,9 +1,3 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 21:08:30 on Sun, Aug 27, 2023
-//
-// Description: tester
-
 #pragma once
 
 #include <memory>
@@ -18,23 +12,23 @@ public:
                     bool is_hybrid = false, size_t prefill_fraction = 0, cudaStream_t stream = nullptr,
                     cudaDeviceProp *dev_prop = nullptr, size_t warmup_iterations = 1, size_t profiling_iterations = 10,
                     size_t sleep_duration = 100, bool enable_check = false)
-        : m_batch(batch),
-          m_seq_q(seq_q),
-          m_seq_k(seq_k),
-          m_head_q(head_q),
-          m_head_k(head_k),
-          m_dim(dim),
-          m_is_causal(is_causal),
-          m_num_splits(num_splits),
-          m_is_alibi(is_alibi),
-          m_is_hybrid(is_hybrid),
-          m_prefill_fraction(prefill_fraction),
-          m_stream(stream),
-          m_dev_prop(dev_prop),
-          m_warmup_iterations(warmup_iterations),
-          m_profiling_iterations(profiling_iterations),
-          m_sleep_duration(sleep_duration),
-          m_enable_check(enable_check) {
+            : m_batch(batch),
+              m_seq_q(seq_q),
+              m_seq_k(seq_k),
+              m_head_q(head_q),
+              m_head_k(head_k),
+              m_dim(dim),
+              m_is_causal(is_causal),
+              m_num_splits(num_splits),
+              m_is_alibi(is_alibi),
+              m_is_hybrid(is_hybrid),
+              m_prefill_fraction(prefill_fraction),
+              m_stream(stream),
+              m_dev_prop(dev_prop),
+              m_warmup_iterations(warmup_iterations),
+              m_profiling_iterations(profiling_iterations),
+              m_sleep_duration(sleep_duration),
+              m_enable_check(enable_check) {
         FAI_CHECK_GT(m_batch, 0);
         FAI_CHECK_GT(m_seq_q, 0);
         FAI_CHECK_GT(m_seq_k, 0);
@@ -98,7 +92,7 @@ public:
 
     ~Tester() {}
 
-    template <typename Func>
+    template<typename Func>
     void evaluate(Func &&fmha, const std::string &name) {
         FLOG("----------------- Evaluating %s -----------------", name.c_str());
         usleep(m_sleep_duration * 1000);
@@ -209,7 +203,8 @@ private:
                         tmp_s[sk] = s_ptr[(sum_seq_q + sq) * (head_q * seq_k) + h * seq_k + sk] * scale;
                         if (is_alibi && sk < sq + row_shift) {
                             tmp_s[sk] +=
-                                (h_slope * (static_cast<int>(sk) - static_cast<int>(sq) - static_cast<int>(row_shift)));
+                                    (h_slope *
+                                     (static_cast<int>(sk) - static_cast<int>(sq) - static_cast<int>(row_shift)));
                         }
                         max_s = std::max(max_s, tmp_s[sk]);
                     }
@@ -258,7 +253,7 @@ private:
         }
     }
 
-    template <typename Func>
+    template<typename Func>
     void profile(Func &&fmha, const std::string &name) {
         m_cuda_timer->start();
         for (size_t i = 0; i < m_profiling_iterations; ++i) {
@@ -323,7 +318,7 @@ private:
     std::shared_ptr<Tensor<half>> m_V = nullptr;  // total_k * head_k * dim
     std::shared_ptr<Tensor<half>> m_O = nullptr;  // total_q * head_q * dim
     std::shared_ptr<Tensor<half>> m_base =
-        nullptr;  // total_q * head_q * dim, base result, init tensor O before each fmha
+            nullptr;  // total_q * head_q * dim, base result, init tensor O before each fmha
 
     std::shared_ptr<Tensor<int>> m_cu_seq_q = nullptr;
     std::shared_ptr<Tensor<int>> m_cu_seq_k = nullptr;

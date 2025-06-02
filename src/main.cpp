@@ -1,10 +1,4 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 21:08:30 on Sun, Aug 27, 2023
-//
-// Description: flash attention inference main
-
-#include "flash_attn_v2.h"
+#include "ops/flash_attn_v2.h"
 #include "gflags/gflags.h"
 #include "omp.h"
 #include "tester.h"
@@ -76,15 +70,15 @@ int main(int argc, char *argv[]) {
     cudaStream_t stream = nullptr;
 
     FLOG(
-        "FMHA: Softmax (Q (%u x %u x %u x %u) * K^T (%u x %u x %u x %u)) * V (%u x %u x %u x %u) = O (%u x %u x %u x "
-        "%u)",
-        FLAGS_b, FLAGS_sq, FLAGS_hq, FLAGS_d, FLAGS_b, FLAGS_sk, FLAGS_hk, FLAGS_d, FLAGS_b, FLAGS_sk, FLAGS_hk,
-        FLAGS_d, FLAGS_b, FLAGS_sq, FLAGS_hq, FLAGS_d);
+            "FMHA: Softmax (Q (%u x %u x %u x %u) * K^T (%u x %u x %u x %u)) * V (%u x %u x %u x %u) = O (%u x %u x %u x "
+            "%u)",
+            FLAGS_b, FLAGS_sq, FLAGS_hq, FLAGS_d, FLAGS_b, FLAGS_sk, FLAGS_hk, FLAGS_d, FLAGS_b, FLAGS_sk, FLAGS_hk,
+            FLAGS_d, FLAGS_b, FLAGS_sq, FLAGS_hq, FLAGS_d);
     FLOG(
-        "Profiling: is causal: %d, num splits: %d, stream: %p, is alibi: %d, is hybrid: %d, prefill fraction: %u, "
-        "warmup iterations: %u, profiling iterations: %u, sleep duration: %u ms, enable check: %d",
-        FLAGS_is_causal, FLAGS_num_splits, stream, FLAGS_is_alibi, FLAGS_is_hybrid, FLAGS_prefill_fraction,
-        FLAGS_warmup_iterations, FLAGS_profiling_iterations, FLAGS_sleep_duration, FLAGS_enable_check);
+            "Profiling: is causal: %d, num splits: %d, stream: %p, is alibi: %d, is hybrid: %d, prefill fraction: %u, "
+            "warmup iterations: %u, profiling iterations: %u, sleep duration: %u ms, enable check: %d",
+            FLAGS_is_causal, FLAGS_num_splits, stream, FLAGS_is_alibi, FLAGS_is_hybrid, FLAGS_prefill_fraction,
+            FLAGS_warmup_iterations, FLAGS_profiling_iterations, FLAGS_sleep_duration, FLAGS_enable_check);
 
     Tester tester(FLAGS_b, FLAGS_sq, FLAGS_sk, FLAGS_hq, FLAGS_hk, FLAGS_d, FLAGS_is_causal, FLAGS_num_splits,
                   FLAGS_is_alibi, FLAGS_is_hybrid, FLAGS_prefill_fraction, stream, &dev_prop, FLAGS_warmup_iterations,

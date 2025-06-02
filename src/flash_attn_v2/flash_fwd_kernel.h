@@ -4,20 +4,20 @@
 
 #pragma once
 
-#include <cutlass/array.h>
-#include <cutlass/cutlass.h>
-#include <cutlass/numeric_conversion.h>
-#include <cutlass/numeric_types.h>
+#include "cutlass/array.h"
+#include "cutlass/cutlass.h"
+#include "cutlass/numeric_conversion.h"
+#include "cutlass/numeric_types.h"
 
 #include <cmath>
-#include <cute/algorithm/copy.hpp>
-#include <cute/algorithm/gemm.hpp>
+#include "cute/algorithm/copy.hpp"
+#include "cute/algorithm/gemm.hpp"
 
-#include "flash_attn_v2/alibi.h"
-#include "flash_attn_v2/block_info.h"
-#include "flash_attn_v2/kernel_traits.h"
-#include "flash_attn_v2/softmax.h"
-#include "flash_attn_v2/utils.h"
+#include "alibi.h"
+#include "block_info.h"
+#include "kernel_traits.h"
+#include "softmax.h"
+#include "utils.h"
 
 namespace flash {
 

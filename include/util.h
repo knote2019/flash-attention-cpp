@@ -1,9 +1,3 @@
-// Copyright 2023. All Rights Reserved.
-// Author: Bruce-Lee-LY
-// Date: 20:42:28 on Sun, Feb 12, 2023
-//
-// Description: util function
-
 #pragma once
 
 #include <string>
@@ -23,10 +17,25 @@ inline int convert_SM_to_cores(int major, int minor) {
         int cores;
     } sSMtoCores;
 
-    sSMtoCores nGpuArchCoresPerSM[] = {{0x30, 192}, {0x32, 192}, {0x35, 192}, {0x37, 192}, {0x50, 128},
-                                       {0x52, 128}, {0x53, 128}, {0x60, 64},  {0x61, 128}, {0x62, 128},
-                                       {0x70, 64},  {0x72, 64},  {0x75, 64},  {0x80, 64},  {0x86, 128},
-                                       {0x87, 128}, {0x89, 128}, {0x90, 128}, {-1, -1}};
+    sSMtoCores nGpuArchCoresPerSM[] = {{0x30, 192},
+                                       {0x32, 192},
+                                       {0x35, 192},
+                                       {0x37, 192},
+                                       {0x50, 128},
+                                       {0x52, 128},
+                                       {0x53, 128},
+                                       {0x60, 64},
+                                       {0x61, 128},
+                                       {0x62, 128},
+                                       {0x70, 64},
+                                       {0x72, 64},
+                                       {0x75, 64},
+                                       {0x80, 64},
+                                       {0x86, 128},
+                                       {0x87, 128},
+                                       {0x89, 128},
+                                       {0x90, 128},
+                                       {-1,   -1}};
 
     int index = 0;
 
@@ -52,11 +61,25 @@ inline const char *convert_SM_to_arch_name(int major, int minor) {
         const char *name;
     } sSMtoArchName;
 
-    sSMtoArchName nGpuArchNameSM[] = {{0x30, "Kepler"},  {0x32, "Kepler"},  {0x35, "Kepler"},       {0x37, "Kepler"},
-                                      {0x50, "Maxwell"}, {0x52, "Maxwell"}, {0x53, "Maxwell"},      {0x60, "Pascal"},
-                                      {0x61, "Pascal"},  {0x62, "Pascal"},  {0x70, "Volta"},        {0x72, "Xavier"},
-                                      {0x75, "Turing"},  {0x80, "Ampere"},  {0x86, "Ampere"},       {0x87, "Ampere"},
-                                      {0x89, "Ada"},     {0x90, "Hopper"},  {-1, "Graphics Device"}};
+    sSMtoArchName nGpuArchNameSM[] = {{0x30, "Kepler"},
+                                      {0x32, "Kepler"},
+                                      {0x35, "Kepler"},
+                                      {0x37, "Kepler"},
+                                      {0x50, "Maxwell"},
+                                      {0x52, "Maxwell"},
+                                      {0x53, "Maxwell"},
+                                      {0x60, "Pascal"},
+                                      {0x61, "Pascal"},
+                                      {0x62, "Pascal"},
+                                      {0x70, "Volta"},
+                                      {0x72, "Xavier"},
+                                      {0x75, "Turing"},
+                                      {0x80, "Ampere"},
+                                      {0x86, "Ampere"},
+                                      {0x87, "Ampere"},
+                                      {0x89, "Ada"},
+                                      {0x90, "Hopper"},
+                                      {-1,   "Graphics Device"}};
 
     int index = 0;
 
