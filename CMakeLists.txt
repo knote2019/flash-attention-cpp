@@ -1,117 +1,86 @@
-#-----------------------------------------------------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
-project(flash-attention-cpp LANGUAGES CXX VERSION 1.0.0)
+# Copyright 2023. All Rights Reserved.
+# Author: Bruce-Lee-LY
+# Date: 20:42:28 on Sun, Feb 12, 2023
+#
+# Description: cmake for flash attention inference
 
-# host information.
-message("==================================")
-cmake_host_system_information(RESULT HOSTNAME QUERY HOSTNAME)
-execute_process(COMMAND bash -c "lspci -nn | grep NVIDIA | wc -l" OUTPUT_VARIABLE nvidia_number)
-message("hostname: ${HOSTNAME}")
-message("rootpath: ${PROJECT_SOURCE_DIR}")
-message("nvidia_number: ${nvidia_number}")
-message("==================================")
+cmake_minimum_required (VERSION 3.16)
 
-# c++ settings.
-set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-if (NOT ${nvidia_number} EQUAL 0)
-    set(CMAKE_CXX_FLAGS "-std=c++17 -pthread -fpic -fopenmp -D_GLIBCXX_USE_CXX11_ABI=1")
-else ()
-    set(CMAKE_CXX_FLAGS "-std=c++17 -pthread -fpic -fopenmp -D_GLIBCXX_USE_CXX11_ABI=0")
-endif ()
-set(CMAKE_BUILD_TYPE Debug)
+project (flash_attention_inference LANGUAGES C CXX CUDA)
 
-# cmake settings.
-if (POLICY CMP0076)
-    cmake_policy(SET CMP0076 NEW)
+if (POLICY CMP0146)
+    cmake_policy (SET CMP0146 OLD) 
 endif ()
 
-# cuda settings.
-if (NOT ${nvidia_number} EQUAL 0)
-    set(CMAKE_CUDA_COMPILER /usr/bin/clang++)
-    set(CMAKE_CUDA_ARCHITECTURES "80")
-else ()
-    set(CMAKE_CUDA_COMPILER /usr/local/corex/bin/clang++)
-    set(CMAKE_CUDA_ARCHITECTURES "ivcore10;ivcore11;ivcore20")
-endif ()
-set(CMAKE_CUDA_STANDARD 17)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_EXTENSIONS OFF)
-set(CMAKE_CUDA_FLAGS "-std=c++17")
-# enable after cuda compiler set.
-enable_language(CUDA)
-message("CMAKE_CUDA_COMPILER=${CMAKE_CUDA_COMPILER}")
-message("CMAKE_CUDA_ARCHITECTURES=${CMAKE_CUDA_ARCHITECTURES}")
+find_program (CCACHE_FOUND ccache)
+if (CCACHE_FOUND)
+    set_property (GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property (GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+endif (CCACHE_FOUND)
 
-#-----------------------------------------------------------------------------------------------------------------------
-# cuda.
-if (NOT ${nvidia_number} EQUAL 0)
-    set(CUDA_INCLUDE "/usr/local/cuda/include")
-    find_library(CUDART_LIBRARY cudart /usr/local/cuda/lib64)
-    # workaround for ld error when compile.
-    execute_process(COMMAND bash -c "ln -sf /usr/local/cuda/lib64/libcudadevrt.a /usr/lib/libcudadevrt.a" OUTPUT_VARIABLE nvidia_number)
-    execute_process(COMMAND bash -c "ln -sf /usr/local/cuda/lib64/libcudart_static.a /usr/lib/libcudart_static.a" OUTPUT_VARIABLE nvidia_number)
-else ()
-    set(CUDA_INCLUDE "/usr/local/corex/include")
-    find_library(CUDART_LIBRARY cudart /usr/local/corex/lib64)
-endif ()
-message("CUDA_INCLUDE=${CUDA_INCLUDE}")
-message("CUDART_LIBRARY=${CUDART_LIBRARY}")
+set (CMAKE_VERBOSE_MAKEFILE ${FAI_VERBOSE_MAKEFILE})
 
-#-----------------------------------------------------------------------------------------------------------------------
-# torch.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_C10D_NCCL")
-set(TORCH_INCLUDE /usr/local/torch/include)
-set(TORCH_API_INCLUDE /usr/local/torch/include/torch/csrc/api/include)
-find_library(TORCH_LIBRARY torch /usr/local/torch/lib)
-find_library(TORCH_CPU_LIBRARY torch_cpu /usr/local/torch/lib)
-find_library(TORCH_CUDA_LIBRARY torch_cuda /usr/local/torch/lib)
-find_library(TORCH_C10_LIBRARY c10 /usr/local/torch/lib)
-find_library(TORCH_C10_CUDA_LIBRARY c10_cuda /usr/local/torch/lib)
-message("==================================")
-message("TORCH_INCLUDE=${TORCH_INCLUDE}")
-message("TORCH_API_INCLUDE=${TORCH_API_INCLUDE}")
-message("TORCH_LIBRARY=${TORCH_LIBRARY}")
-message("TORCH_CPU_LIBRARY=${TORCH_CPU_LIBRARY}")
-message("TORCH_CUDA_LIBRARY=${TORCH_CUDA_LIBRARY}")
-message("TORCH_C10_LIBRARY=${TORCH_C10_LIBRARY}")
-message("TORCH_C10_CUDA_LIBRARY=${TORCH_C10_CUDA_LIBRARY}")
-message("==================================")
+set (CMAKE_C_FLAGS "-std=c17")
+set (CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} -O0 -g2 -ggdb")
+set (CMAKE_C_FLAGS_RELEASE "$ENV{CFLAGS} -O3")
 
-#-----------------------------------------------------------------------------------------------------------------------
-# sources.
-file(GLOB_RECURSE TEST_SRCS src/flash-attention/*.cpp src/flash-attention/*.cu)
-message("TEST_SRCS=${TEST_SRCS}")
+set (CMAKE_CXX_FLAGS "-std=c++17")
+set (CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -g2 -ggdb")
+set (CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3")
 
-# set target.
-add_executable(runTests)
-target_compile_options(runTests PUBLIC -Wno-deprecated-declarations)
-target_include_directories(runTests PUBLIC
-        gtest
-        gtest/include
-        include
-        src/flash-attention
-        # cuda.
-        ${CUDA_INCLUDE}
-        # torch.
-        ${TORCH_INCLUDE}
-        ${TORCH_API_INCLUDE}
+set (CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed")
+set (CMAKE_CUDA_ARCHITECTURES "80")
+
+add_compile_options (
+    -Wall
+    -Werror
+    -Wextra
+    # -Wswitch-default
+    # -Wfloat-equal
+    -Wshadow
+    -Wcast-qual
+    -Wno-strict-aliasing
 )
-target_sources(runTests PUBLIC
-        src/main.cpp
-        gtest/src/gtest-all.cc
-        src/api.cpp
-        ${TEST_SRCS}
+
+# Nvidia GPU
+find_package (CUDA REQUIRED)
+# unset (CUDA_USE_STATIC_CUDA_RUNTIME CACHE)
+# option (CUDA_USE_STATIC_CUDA_RUNTIME OFF)
+
+set (CUDA_VERBOSE_BUILD ${FAI_VERBOSE_MAKEFILE})
+set (CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++17 -Xcompiler -fopenmp --expt-relaxed-constexpr")
+if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_${CMAKE_CUDA_ARCHITECTURES} -g -lineinfo -Xptxas=-v -O0")
+else ()
+    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -gencode arch=compute_${CMAKE_CUDA_ARCHITECTURES},code=sm_${CMAKE_CUDA_ARCHITECTURES} --use_fast_math -O3")
+endif ()
+
+set (SYS_CUDART_PATH "/usr/local/cuda")
+set (SYS_CUDA_DRIVER_PATH "/usr/lib/x86_64-linux-gnu")
+
+find_package(gflags REQUIRED)
+find_package(OpenMP REQUIRED)
+
+include_directories (
+    ${PROJECT_SOURCE_DIR}/src/common
+    ${PROJECT_SOURCE_DIR}/src/kernel
+    ${PROJECT_SOURCE_DIR}/src/ops
+    ${PROJECT_SOURCE_DIR}/third_party/cutlass/include
+    ${SYS_CUDART_PATH}/include
+    ${GFLAGS_INCLUDE_DIR}
 )
-target_link_libraries(runTests PUBLIC
-        # cuda.
-        ${CUDART_LIBRARY}
-        # torch.
-        ${TORCH_LIBRARY}
-        ${TORCH_CPU_LIBRARY}
-        ${TORCH_CUDA_LIBRARY}
-        ${TORCH_C10_LIBRARY}
-        ${TORCH_C10_CUDA_LIBRARY}
+
+link_directories (
+    ${SYS_CUDART_PATH}/lib64
+    ${SYS_CUDA_DRIVER_PATH}
 )
+
+file (GLOB FAI_SRCS 
+    ${PROJECT_SOURCE_DIR}/src/kernel/flash_attn/*.cu
+    ${PROJECT_SOURCE_DIR}/src/kernel/flash_attn_v2/*.cu
+    ${PROJECT_SOURCE_DIR}/src/ops/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/*.cpp
+)
+
+cuda_add_executable (flash_attention_inference ${FAI_SRCS})
+target_link_libraries (flash_attention_inference OpenMP::OpenMP_CXX ${GFLAGS_LIBRARIES})
