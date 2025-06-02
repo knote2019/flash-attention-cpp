@@ -14,10 +14,6 @@ endif (CCACHE_FOUND)
 
 set(CMAKE_VERBOSE_MAKEFILE ${FAI_VERBOSE_MAKEFILE})
 
-set(CMAKE_C_FLAGS "-std=c17")
-set(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} -O0 -g2 -ggdb")
-set(CMAKE_C_FLAGS_RELEASE "$ENV{CFLAGS} -O3")
-
 set(CMAKE_CXX_FLAGS "-std=c++17")
 set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -g2 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3")
@@ -51,7 +47,6 @@ endif ()
 
 
 find_package(gflags REQUIRED)
-find_package(OpenMP REQUIRED)
 
 include_directories(
         include
@@ -69,4 +64,4 @@ file(GLOB FAI_SRCS
         src/flash_attn_v2/*.cu
 )
 cuda_add_executable(runTests ${FAI_SRCS})
-target_link_libraries(runTests OpenMP::OpenMP_CXX ${GFLAGS_LIBRARIES})
+target_link_libraries(runTests ${GFLAGS_LIBRARIES})
