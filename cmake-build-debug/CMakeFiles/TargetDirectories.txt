@@ -1,3 +1,0 @@
-/root/flash-attention-cpp/cmake-build-debug/CMakeFiles/runTests.dir
-/root/flash-attention-cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
-/root/flash-attention-cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
