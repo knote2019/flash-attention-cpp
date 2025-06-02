@@ -62,10 +62,10 @@ find_package(gflags REQUIRED)
 find_package(OpenMP REQUIRED)
 
 include_directories (
-    ${PROJECT_SOURCE_DIR}/src/common
-    ${PROJECT_SOURCE_DIR}/src/kernel
-    ${PROJECT_SOURCE_DIR}/src/ops
-    ${PROJECT_SOURCE_DIR}/third_party/cutlass/include
+    include
+    src/common
+    src/kernel
+    src/ops
     ${SYS_CUDART_PATH}/include
     ${GFLAGS_INCLUDE_DIR}
 )
@@ -76,10 +76,10 @@ link_directories (
 )
 
 file (GLOB FAI_SRCS 
-    ${PROJECT_SOURCE_DIR}/src/kernel/flash_attn/*.cu
-    ${PROJECT_SOURCE_DIR}/src/kernel/flash_attn_v2/*.cu
-    ${PROJECT_SOURCE_DIR}/src/ops/*.cpp
-    ${PROJECT_SOURCE_DIR}/src/*.cpp
+    src/kernel/flash_attn/*.cu
+    src/kernel/flash_attn_v2/*.cu
+    src/ops/*.cpp
+    src/*.cpp
 )
 
 cuda_add_executable (flash_attention_inference ${FAI_SRCS})
