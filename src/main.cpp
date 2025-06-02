@@ -4,7 +4,6 @@
 //
 // Description: flash attention inference main
 
-#include "flash_attn.h"
 #include "flash_attn_v2.h"
 #include "gflags/gflags.h"
 #include "omp.h"
@@ -90,7 +89,6 @@ int main(int argc, char *argv[]) {
     Tester tester(FLAGS_b, FLAGS_sq, FLAGS_sk, FLAGS_hq, FLAGS_hk, FLAGS_d, FLAGS_is_causal, FLAGS_num_splits,
                   FLAGS_is_alibi, FLAGS_is_hybrid, FLAGS_prefill_fraction, stream, &dev_prop, FLAGS_warmup_iterations,
                   FLAGS_profiling_iterations, FLAGS_sleep_duration, FLAGS_enable_check);
-    tester.evaluate(flash_attn, "Flash-Attention");
     tester.evaluate(flash_attn_v2, "Flash-Attention-V2");
 
     GFLAGS_NAMESPACE::ShutDownCommandLineFlags();
