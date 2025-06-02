@@ -1,4 +1,0 @@
-/root/flash-attention-cpp/build/CMakeFiles/flash_attn.dir
-/root/flash-attention-cpp/build/CMakeFiles/runTests.dir
-/root/flash-attention-cpp/build/CMakeFiles/edit_cache.dir
-/root/flash-attention-cpp/build/CMakeFiles/rebuild_cache.dir
