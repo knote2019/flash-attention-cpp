@@ -1,0 +1,4 @@
+# ninja log v5
+0	584	1748865395207632498	CMakeFiles/runTests.dir/src/api.cpp.o	83e5dbb84cb322ae
+0	20268	1748865414851493882	CMakeFiles/runTests.dir/src/main.cpp.o	557f883b3f5d57e
+0	5238	1748865399851599728	CMakeFiles/runTests.dir/gtest/src/gtest-all.cc.o	884a9ab4ac6b41e1

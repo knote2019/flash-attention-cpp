@@ -82,7 +82,8 @@ message("==================================")
 
 #-----------------------------------------------------------------------------------------------------------------------
 # sources.
-file(GLOB_RECURSE TEST_SRCS src/*.cpp src/*.cu)
+file(GLOB_RECURSE TEST_SRCS src/flash-attention/*.cpp src/flash-attention/*.cu)
+message("TEST_SRCS=${TEST_SRCS}")
 
 # set target.
 add_executable(runTests)
@@ -91,6 +92,7 @@ target_include_directories(runTests PUBLIC
         gtest
         gtest/include
         include
+        src/flash-attention
         # cuda.
         ${CUDA_INCLUDE}
         # torch.
@@ -100,6 +102,7 @@ target_include_directories(runTests PUBLIC
 target_sources(runTests PUBLIC
         src/main.cpp
         gtest/src/gtest-all.cc
+        src/api.cpp
         ${TEST_SRCS}
 )
 target_link_libraries(runTests PUBLIC
@@ -112,4 +115,3 @@ target_link_libraries(runTests PUBLIC
         ${TORCH_C10_LIBRARY}
         ${TORCH_C10_CUDA_LIBRARY}
 )
-

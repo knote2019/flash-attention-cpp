@@ -1,0 +1,29 @@
+/opt/clion-2023.3.5/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion-2023.3.5/bin/ninja/linux/x64/ninja -G Ninja -S /root/flash-attention-cpp -B /root/flash-attention-cpp/cmake-build-debug
+==================================
+hostname: b0cfc7f7b407
+rootpath: /root/flash-attention-cpp
+nvidia_number: 2
+
+==================================
+CMAKE_CUDA_COMPILER=/usr/bin/clang++
+CMAKE_CUDA_ARCHITECTURES=80
+CUDA_INCLUDE=/usr/local/cuda/include
+CUDART_LIBRARY=/usr/local/cuda/lib64/libcudart.so
+==================================
+TORCH_INCLUDE=/usr/local/torch/include
+TORCH_API_INCLUDE=/usr/local/torch/include/torch/csrc/api/include
+TORCH_LIBRARY=/usr/local/torch/lib/libtorch.so
+TORCH_CPU_LIBRARY=/usr/local/torch/lib/libtorch_cpu.so
+TORCH_CUDA_LIBRARY=/usr/local/torch/lib/libtorch_cuda.so
+TORCH_C10_LIBRARY=/usr/local/torch/lib/libc10.so
+TORCH_C10_CUDA_LIBRARY=/usr/local/torch/lib/libc10_cuda.so
+==================================
+TEST_SRCS=/root/flash-attention-cpp/src/flash-attention/flash_fwd_hdim128_fp16_sm80.cu;/root/flash-attention-cpp/src/flash-attention/flash_fwd_split_hdim128_fp16_sm80.cu
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /root/flash-attention-cpp/cmake-build-debug
+
+Problems were encountered while collecting compiler information:
+	clang++: error: unknown argument: '--use_fast_math'
+	Unexpected compiler output.This compiler might be unsupported.
+	If you are using GCC/Clang, please report the bug in https://youtrack.jetbrains.com/issues/CPP.
